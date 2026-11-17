@@ -1,0 +1,39 @@
+CREATE TABLE IF NOT EXISTS usuario (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  nome TEXT NOT NULL,
+  email TEXT NOT NULL UNIQUE,
+  senha_hash TEXT NOT NULL,
+  token TEXT UNIQUE,
+  horas_iniciais INTEGER NOT NULL DEFAULT 0,
+  meta_diaria_horas INTEGER NOT NULL DEFAULT 3,
+  pontos INTEGER NOT NULL DEFAULT 0,
+  sequencia INTEGER NOT NULL DEFAULT 0,
+  melhor_sequencia INTEGER NOT NULL DEFAULT 0,
+  ultimo_dia_ativo TEXT,
+  onboarding_ok INTEGER NOT NULL DEFAULT 0
+);
+
+CREATE TABLE IF NOT EXISTS interesse (
+  usuario_id INTEGER NOT NULL REFERENCES usuario(id),
+  nome TEXT NOT NULL,
+  PRIMARY KEY (usuario_id, nome)
+);
+
+CREATE TABLE IF NOT EXISTS desafio (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  usuario_id INTEGER NOT NULL REFERENCES usuario(id),
+  nome TEXT NOT NULL,
+  duracao_dias INTEGER NOT NULL,
+  meta_diaria_min INTEGER NOT NULL,
+  progresso_min INTEGER NOT NULL DEFAULT 0,
+  criado_em TEXT NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS sessao (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  usuario_id INTEGER NOT NULL REFERENCES usuario(id),
+  minutos INTEGER NOT NULL,
+  presente INTEGER NOT NULL,
+  pontos INTEGER NOT NULL,
+  dia TEXT NOT NULL
+);
